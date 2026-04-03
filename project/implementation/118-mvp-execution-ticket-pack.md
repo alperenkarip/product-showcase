@@ -82,7 +82,7 @@ Kural:
 
 ### 5.1. D0 amaci
 
-Monorepo, stack, schema authority ve generated artefact zincirini kurmak.
+Monorepo, stack, schema authority, boilerplate mirror/sync katmani ve generated artefact zincirini kurmak.
 
 ### 5.2. Ticket'ler
 
@@ -144,6 +144,18 @@ Monorepo, stack, schema authority ve generated artefact zincirini kurmak.
 - Acceptance:
   1. request/job correlation id uretimi vardir
   2. Sentry baseline'in yeri bellidir
+
+#### TKT-007 - Upstream boundary and docs mirror bootstrap
+
+- Capability: `CAP-01-01`
+- Owner: platform/docs
+- Write scope: root `BOUNDARY.md`, root `README.md`, `docs/adr`, `.sync-config.yaml`, `tooling/sync`
+- Referans: `116`, `45-boilerplate-project-boundary-contract`, `49-upstream-sync-strategy`
+- Acceptance:
+  1. `docs/adr/` read-only boilerplate mirror'i vardir
+  2. `.sync-config.yaml` vardir
+  3. `tooling/sync/upstream-sync-manifest.yaml` vardir
+  4. `BOUNDARY.md` boilerplate upstream hash ve last sync metadata'sini tasir
 
 ---
 
@@ -353,15 +365,16 @@ Monorepo, stack, schema authority ve generated artefact zincirini kurmak.
 - Acceptance:
   1. stale / hidden / unavailable ayrimi dogru gorunur
 
-#### TKT-042 - Stripe checkout and entitlement bridge
+#### TKT-042 - RevenueCat authority and Stripe web checkout bridge
 
 - Capability: `CAP-08-01`
-- Owner: backend/billing
-- Write scope: `apps/api`, `apps/jobs`, `packages/db`
+- Owner: backend/billing/mobile
+- Write scope: `apps/web`, `apps/api`, `apps/jobs`, `apps/mobile`, `packages/db`, `packages/contracts`
 - Referans: `28`, `64`, `75`, `117`
 - Acceptance:
   1. checkout success tek basina access acmaz
-  2. entitlement bridge pending state gorunur
+  2. `Stripe-class` checkout ve canonical subscription authority ayni entitlement modeline normalize edilir
+  3. entitlement bridge pending state gorunur
 
 #### TKT-043 - Notification center and transactional email
 
@@ -417,6 +430,7 @@ Monorepo, stack, schema authority ve generated artefact zincirini kurmak.
 - Acceptance:
   1. generated artefact drift yakalanir
   2. migration/seed guard calisir
+  3. upstream drift audit skeleton'u tanimlanir
 
 #### TKT-053 - Internal test cohort run
 
@@ -491,4 +505,3 @@ Bu belge basarili sayilir, eger:
 2. hangi ticket'in hangi dosya alanina dokunacagi netse
 3. dependency zinciri nedeniyle sprint ortasi kaos cikmiyorsa
 4. MVP implementasyonu belge yorumu yerine acik delivery contract'i ile ilerliyorsa
-

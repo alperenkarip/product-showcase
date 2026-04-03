@@ -1,4 +1,6 @@
 # BOUNDARY.md
+<!-- boilerplate_upstream_hash: 6eb508710a69c2c6a3784961fc9c56f01cae7e7b -->
+<!-- last_sync_date: 2026-04-03 -->
 
 ## Dokuman Kimligi
 
@@ -17,6 +19,26 @@ Bu belge, boilerplate otoritesi ile proje otoritesini acik bicimde ayirir. Bu re
 
 ---
 
+# Zorunlu Miras Kurallari
+
+- [ ] TypeScript strict mode aktif (`fiziksel bootstrap bekleniyor`)
+- [ ] ESLint canonical rules uygulanıyor (`fiziksel bootstrap bekleniyor`)
+- [ ] Canonical stack kullaniliyor (`fiziksel bootstrap bekleniyor`)
+- [ ] Import yonu kurallari korunuyor (`fiziksel bootstrap bekleniyor`)
+
+# Yapisal Miras Kurallari
+
+- [ ] Test coverage esigi enforce ediliyor (`fiziksel bootstrap bekleniyor`)
+- [ ] Semantic token-only design token kullanimi enforce ediliyor (`fiziksel bootstrap bekleniyor`)
+- [x] `docs/adr/` read-only boilerplate mirror'i mevcut
+- [x] `.sync-config.yaml` ve `tooling/sync/upstream-sync-manifest.yaml` mevcut
+
+# Override Kayitlari
+
+- Yok. Proje belgeleri boilerplate closed area'yi override etmez; yalnizca proje baglaminda daraltma ve somutlastirma yapar.
+
+---
+
 # 2. Guncel Turetme Durumu
 
 | Alan | Durum |
@@ -24,11 +46,12 @@ Bu belge, boilerplate otoritesi ile proje otoritesini acik bicimde ayirir. Bu re
 | Proje adi | `product-showcase` |
 | Calisma modu | Documentation-first, implementation-ready, pre-code-bootstrap |
 | Boilerplate referansi | `../boilerplate` |
-| Referans denetim tarihi | 2026-04-02 |
+| Referans denetim tarihi | 2026-04-03 |
 | Fiziksel monorepo bootstrap | Henuz uygulanmadi; source-of-truth bootstrap belgeleri yazildi |
-| Upstream remote | `origin -> alperenkarip/product-showcase` |
-| `.sync-config.yaml` | Yok |
-| `docs/adr/` boilerplate kopyasi | Yok |
+| Upstream remote | `origin -> alperenkarip/product-showcase`, `upstream -> alperenkarip/boilerplate` |
+| `.sync-config.yaml` | Var |
+| `docs/adr/` boilerplate kopyasi | Var |
+| `tooling/sync/` script ve manifest | Var |
 | Aktif override | Yok |
 
 Bu repo artik proje icin canonical git reposudur; kod omurgasi henuz acilmamis olsa da derived monorepo bootstrap'i bu repo icinde uygulanacaktir.
@@ -66,7 +89,7 @@ Bu repo icinde proje ekibinin otorite alani:
 - root `.env.example`
 - kaynak arastirma notlari
 
-Boilerplate'in `docs/` alani referans otoritesidir. Bu repoda o alan tekrar yazilmaz.
+Boilerplate'in `docs/` alani referans otoritesidir. Bu repo boilerplate governance alanini elle yeniden yazmaz; gerekli read-only mirror ve sync artefact'lari root `docs/` ve `tooling/sync/` altinda fiziksel olarak tutulur.
 
 ---
 
@@ -116,10 +139,9 @@ Toplam `project/` belge sayisi: 107 dosya.
 
 Belge seti implementation-ready olsa da su alanlar henuz fiziksel repo seviyesinde yoktur:
 
-- `apps/`, `packages/`, `tooling/`, `scripts/`
-- derived repo `docs/` ve boilerplate ADR kopyasi
-- upstream sync config ve docs mirror automation
-- toolchain lock dosyalari
+- `apps/`, `packages/`, `scripts/`
+- root workspace manifest'leri ve runtime package iskeleti
+- lock dosyalari ve package manager/bootstrap config'i
 
 Bu bosluklar artik belgesiz degildir; `project/implementation/116-118`, `project/data/76-77` ve `project/operations/105-106` aileleri tarafindan kapatilacak sekilde tanimlanmistir. Fiziksel implementasyon adimi bunlari uygulamaktir.
 
@@ -130,6 +152,6 @@ Bu bosluklar artik belgesiz degildir; `project/implementation/116-118`, `project
 1. `project/implementation/116-derived-repo-bootstrap-and-monorepo-spec.md` uzerinden fiziksel repo bootstrap'ini baslatmak
 2. `project/implementation/117-tech-stack-and-runtime-decisions.md` uzerinden dependency ve runtime lock'larini package manifest'lerine uygulamak
 3. `project/data/76-openapi-and-client-generation-spec.md` ve `project/data/77-database-migration-and-seed-bootstrap-plan.md` uzerinden generated artefact ve migration zincirini kurmak
-4. `docs/adr/` referans setini derived repo'ya yerlestirmek
+4. `tooling/sync/upstream-sync.sh` uzerinden ilk sync dry-run ve drift kontrol hattini calistirmak
 5. `.env.example` ve `project/operations/100-environment-and-secrets-matrix.md` uzerinden gercek environment kurulumuna gecmek
 6. `project/implementation/118-mvp-execution-ticket-pack.md` uzerinden sprint ve ticket acilisini baslatmak

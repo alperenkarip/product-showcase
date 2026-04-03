@@ -68,14 +68,14 @@ Bu nedenle burada "hangi kutuphane seviliyor?" degil, "hangi secim bu urunun kar
 
 Bu belge icin ana karar sudur:
 
-> `product-showcase`, boilerplate'in canonical stack kararlarina sadik kalarak `Node 20.19.x + pnpm 10.x + Turbo 2.x + TypeScript 5.9.x` monoreposu olarak kurulacak; web runtime `React 19.2 + Vite 8 + React Router 7`, mobile runtime `Expo SDK 55 + React Native 0.83 + React Navigation 7`, API runtime `Hono + Zod + Better Auth + Drizzle + PostgreSQL`, jobs runtime `Inngest`, core observability `Sentry`, transactional email `Resend-class`, web billing authority `Stripe-class` ve analytics `vendor-agnostic abstraction` uzerinden yurutulecektir.
+> `product-showcase`, boilerplate'in canonical stack kararlarina sadik kalarak `Node 20.19.x + pnpm 10.x + Turbo 2.x + TypeScript 5.9.x` monoreposu olarak kurulacak; web runtime `React 19.2 + Vite 8 + React Router 7`, mobile runtime `Expo SDK 55 + React Native 0.83 + React Navigation 7`, API runtime `Hono + Zod + Better Auth + Drizzle + PostgreSQL`, jobs runtime `Inngest`, core observability `Sentry`, transactional email `Resend-class`, canonical subscription authority `RevenueCat-class`, web checkout surface `Stripe-class` ve analytics `vendor-agnostic abstraction` uzerinden yurutulecektir.
 
 Bu karar su sonuclari dogurur:
 
 1. Next.js, Expo Router ve tek-router soyutlamasi secilmez.
 2. Query-layer bootstrap default'u degildir; complexity threshold ile acilir.
 3. NativeWind 5 candidate track'i proje icin zorunlu baseline sayilmaz; bu repo v1 mobile styling fallback'ini aktive eder.
-4. Mobile app icinde native subscription authority acilmaz; v1 billing authority web checkout + internal entitlement uzerindedir.
+4. Mobile paid entry surface MVP kritik yoluna alinmayabilir; ancak canonical subscription authority `RevenueCat-class` entitlement katmani olarak korunur ve web checkout ayni entitlement sistemine baglanir.
 
 ---
 
@@ -306,21 +306,35 @@ Preferred family `PostHog-class` olarak kaydedilir; ancak vendor secimi taxonomy
 
 ## 12. Billing, email ve domain/vendor kararlar
 
-## 12.1. V1 billing authority
+## 12.1. Canonical subscription authority
 
-Web checkout + server-side entitlement authority icin `Stripe-class` provider secilir.
+Boilerplate ADR-016 ile uyumlu olarak canonical subscription authority `RevenueCat-class` olur.
 
 Neden:
 
-1. owner-only web billing akisina uygundur
-2. checkout success ile webhook authority ayrimini net tasir
-3. native app store review riskini v1 kritiginden cikarir
+1. cross-platform entitlement truth'unu tek yerde toplar
+2. web Stripe ve mobile store billing olaylarini ayni subscription sistemi altinda birlestirir
+3. receipt validation, renewal, grace ve cancellation lifecycle'ini canonical hatta tasir
 
-## 12.2. RevenueCat'in yeri
+## 12.2. Web checkout surface
 
-RevenueCat boilerplate canonical IAP yoludur; ancak bu proje icin v1 critical path'e alinmaz. Native paid surface acildiginda eklenir.
+Owner web checkout UX'u icin `Stripe-class` provider kullanilir; ancak bu provider subscription authority yerine gecmez.
 
-## 12.3. Transactional email
+Kurallar:
+
+1. checkout success tek basina access acmaz
+2. web checkout olayi `RevenueCat-class` entitlement zinciriyle normalize edilir
+3. `Stripe-class` surface, canonical IAP yolunu devre disi birakan alternatif truth haline getirilemez
+
+## 12.3. MVP sequencing
+
+Bu proje icin v1 sequencing karari sudur:
+
+1. owner-facing web checkout akisi once acilabilir
+2. mobile paid entry UI MVP kritik yoluna alinmayabilir
+3. bu sequencing, `RevenueCat-class` subscription authority'sini erteleyen veya mimariden silen bir karar degildir
+
+## 12.4. Transactional email
 
 Preferred family `Resend-class` olur.
 
@@ -370,7 +384,8 @@ Bu belgeye gore su yollar secilmez:
 3. ikinci state library
 4. mobile ve web icin ayrik schema authority
 5. server state'i generic local store'a yazma
-6. mobile app store billing'i MVP kritik yoluna alma
+6. `Stripe-class` provider'i tek subscription truth'u haline getirme
+7. boilerplate canonical IAP yolunu "native sonra bakariz" diyerek mimariden silme
 
 ---
 
@@ -385,6 +400,10 @@ Ilk bootstrap'te asgari su dependency aileleri vardir:
 5. Sentry
 6. Playwright
 7. testing, lint, tsconfig ve config paketleri
+
+Not:
+
+- `RevenueCat-class` subscription authority adapter'i ve `Stripe-class` web checkout bridge'i MVP delivery kapsamindadir; ilk bootstrap commit'inde full wiring zorunlu degildir ama package boundary ve integration yeri acik yazilir. `Stripe-only` shortcut kabul edilmez.
 
 Ilk bootstrap'te zorunlu olmayanlar:
 
@@ -413,4 +432,3 @@ Bu belge basarili sayilir, eger:
 2. boilerplate ile celisen secimler delivery ortasinda geri donmuyorsa
 3. bootstrap commit'i teknolojik spike degil, kararli omurga uretirse
 4. conditional adoption alanlari gizli degil, yazili ve denetlenebilir kalirsa
-

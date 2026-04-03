@@ -1,0 +1,5 @@
+upstream_repo: "https://github.com/alperenkarip/boilerplate.git"
+project_name: "product-showcase"
+org_scope: "@product-showcase"
+upstream_default_ref: "main"
+upstream_local_reference: "../boilerplate"

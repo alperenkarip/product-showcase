@@ -85,12 +85,13 @@ Bu karar su sonuclari dogurur:
 3. `project/` klasoru silinmez; kodun ust otoritesi olarak kalir.
 4. Package sinirlari bootstrap commit'inde gorunur hale gelir.
 5. App icinde lokal helper kopyalari yerine shared package authority'si kurulur.
+6. Boilerplate'ten devralinan `docs/adr/` mirror'i, `.sync-config.yaml` ve `tooling/sync/upstream-sync-manifest.yaml` ayni root repo icinde fiziksel olarak kurulur.
 
 ---
 
 ## 4. Monorepo tasarim ilkeleri
 
-Bu proje icin monorepo su yedi ilkeye dayanir:
+Bu proje icin monorepo su sekiz ilkeye dayanir:
 
 1. docs-first authority korunur
 2. apps ince, packages baglayici olur
@@ -99,6 +100,7 @@ Bu proje icin monorepo su yedi ilkeye dayanir:
 5. codegen ve generated artefact path'leri onceden sabitlenir
 6. test yardimcilari runtime'lar arasi kopyalanmaz
 7. scripts ve tooling app kodundan ayrik kalir
+8. zorunlu miras artefact'lari fiziksel olarak repo kokunde gorunur olur
 
 ### 4.1. Docs-first authority korunur
 
@@ -130,6 +132,19 @@ One-shot maintenance script'leri `scripts/`; repo-genis kalite ve codegen araci 
 
 ---
 
+### 4.8. Zorunlu miras artefact'lari fiziksel olur
+
+`product-showcase`, boilerplate'i sadece referans gosterip gecmez. Derived repo olarak su fiziksel artefact'lari kok seviyesinde tasir:
+
+1. read-only `docs/adr/` mirror'i
+2. `.sync-config.yaml`
+3. `tooling/sync/upstream-sync-manifest.yaml`
+4. upstream drift/sync komutlari ve audit task'lari
+
+Bu katmanlar olmadan repo "derived" degil, sadece "boilerplate'i okumus proje klasoru" sayilir.
+
+---
+
 ## 5. Root klasor authority haritasi
 
 Bootstrap sonrasi root duzeni asgari su sekilde olacaktir:
@@ -158,9 +173,13 @@ Bootstrap sonrasi root duzeni asgari su sekilde olacaktir:
 |   `-- shared-utils/
 |-- scripts/
 |-- tooling/
+|   |-- ci/
+|   `-- sync/
 |-- project/
 |-- docs/
+|   `-- adr/
 |-- .github/
+|-- .sync-config.yaml
 |-- package.json
 |-- pnpm-workspace.yaml
 |-- turbo.json
@@ -173,9 +192,17 @@ Mevcut proje-ozel karar belgeleri burada kalir. Runtime kodu bu klasore yazilmaz
 
 ### 5.2. `docs/`
 
-Boilerplate referans ADR ve governance aynalari icin ayrilan alan olur. Bu klasor documentation surface'tir; app kodu burada yasamaz.
+Boilerplate referans ADR ve governance aynalari icin ayrilan alan olur. `docs/adr/` read-only tutulur; bu klasor documentation surface'tir, app kodu burada yasamaz.
 
-### 5.3. `.github/`
+### 5.3. `.sync-config.yaml`
+
+Adaptive sync icin root source-of-truth degisken dosyasidir. Repo adi, org scope ve upstream repo kimligi bu dosyada tutulur.
+
+### 5.4. `tooling/sync`
+
+Upstream sync manifest'i, drift audit script'leri ve docs mirror otomasyonu burada yasayacaktir.
+
+### 5.5. `.github/`
 
 CI, label, release ve docs audit pipeline'i burada kalir.
 
@@ -371,6 +398,9 @@ Bootstrap basladi denebilmesi icin ilk fiziksel implementasyon commit'i asgari s
 5. env parse authority'si
 6. dummy ama calisan root task zinciri
 7. CI'da `lint + typecheck + test` skeleton'u
+8. `docs/adr/` read-only boilerplate mirror'i
+9. `.sync-config.yaml`
+10. `tooling/sync/upstream-sync-manifest.yaml`
 
 Sunlar olmadan bootstrap tamamlandi denmez:
 
@@ -378,6 +408,7 @@ Sunlar olmadan bootstrap tamamlandi denmez:
 2. package ismi var ama tsconfig yok
 3. app shell var ama workspace baglantisi yok
 4. command isimleri tanimsiz
+5. boilerplate mirror ve sync artefact'lari atlanmis root iskeleti
 
 ---
 
@@ -402,6 +433,7 @@ Bu belge faz 0 icin su emirleri verir:
 2. generated artefact path'leri kod yazilmadan once sabitlenecek
 3. root command sozlugu ekibe onboarding maliyeti yaratmayacak kadar sade olacak
 4. `project/` dokuman authority'si kodla ayni repo icinde korunacak
+5. derived repo boundary'si sadece belgeyle degil, `docs/adr/` mirror'i ve sync artefact'lariyla fiziksel olarak kurulacak
 
 ---
 
@@ -422,4 +454,3 @@ Bu belge basarili sayilir, eger:
 2. apps ile packages arasindaki authority ayrimi tartismasizsa
 3. bootstrap commit'i "dosya acildi" degil gercek monorepo omurgasi uretiyorsa
 4. ileride fiziksel repo temizligine degil urun implementasyonuna enerji harcaniyorsa
-

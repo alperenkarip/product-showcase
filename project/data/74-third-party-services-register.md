@@ -352,8 +352,8 @@ Uygulama yalniz son bilinen entitlement snapshot ile kontrollu grace davranisi s
 
 ### 11.7. Preferred implementation family
 
-- subscription authority / entitlements aggregator
-- mobile store billing launch sonrasinda acilirsa yeni provider degistirmeden receipt ve entitlement genislemesini tasiyabilecek bir aile
+- `RevenueCat-class` subscription authority / entitlements aggregator
+- web checkout provider ayriysa ayni entitlement sistemine baglanabilecek `Stripe-class` bridge ailesi
 
 ---
 

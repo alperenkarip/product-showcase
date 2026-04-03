@@ -2,11 +2,13 @@
 
 `product-showcase`, creator'larin kullandigi veya onerdigi urunleri tek link altinda baglamli storefront'lar, shelf'ler ve content-linked page'ler uzerinden yayinlamasini hedefleyen urun icin proje-ozel dokumantasyon ve implementasyon authority reposudur.
 
-Bu repo su anda kod degil, derived proje oncesi belge otoritesi icerir. Boilerplate otoritesi `../boilerplate` altindadir; bu dizin ise yalnizca proje-ozel karar katmanini tasir.
+Bu repo su anda kod degil, derived repo bootstrap oncesi belge otoritesi icerir. Boilerplate otoritesi `../boilerplate` altindadir; bu dizin proje-ozel karar katmanini tasir ve zorunlu `docs/adr/` mirror'i ile sync artefact'larini da ayni root repo icinde barindirir.
 
 ## Ne Var?
 
 - root boundary ve repo ozeti
+- root `docs/adr/` read-only boilerplate mirror'i
+- root `.sync-config.yaml` ve `tooling/sync/` sync artefact'lari
 - `project/` altinda implementation-ready proje-ozel dokuman seti
 - arastirma notlari ve giris kaynaklari
 - `.env.example` + environment matrix referansi
@@ -28,7 +30,7 @@ Ilk giris icin onerilen sira:
 
 ## Dokuman Aileleri
 
-Bu repo, boilerplate `docs/` alanini tekrar etmez. Onun yerine su proje-ozel aileleri doldurur:
+Bu repo, boilerplate governance alanini elle yeniden yazmaz. Onun yerine su proje-ozel aileleri doldurur; zorunlu boilerplate mirror'larini root `docs/` altinda read-only olarak tasir:
 
 - `project/00-05` -> foundation
 - `project/research/10-13` -> arastirma ve risk
@@ -56,4 +58,4 @@ Bu belge seti su kaynaklar kullanilarak yazildi:
 
 ## Durum
 
-Mevcut durum `documentation-first / implementation-ready / pre-code-bootstrap` safhasidir. Proje belge omurgasi, repo/bootstrap kararlari, stack secimi, contract generation plani ve ticket seviyesi MVP execution paketi kurulmustur; fiziksel kod bootstrap'i bu repo icinde bir sonraki uygulama adimidir.
+Mevcut durum `documentation-first / implementation-ready / pre-code-bootstrap` safhasidir. Proje belge omurgasi, boilerplate `docs/adr/` mirror'i, sync artefact'lari, repo/bootstrap kararlari, stack secimi, contract generation plani ve ticket seviyesi MVP execution paketi kurulmustur; bir sonraki uygulama adimi fiziksel kod bootstrap'idir.

@@ -1,0 +1,305 @@
+# upstream-sync-manifest.yaml
+# Boilerplate'ten derived projelere sync edilecek dosyalarin canonical tanimlamasi.
+# Bu dosya sync script'inin ve drift detection CI job'inin source-of-truth'udur.
+#
+# Sync modlari:
+#   exact    — Dosya birebir kopyalanir, derived projede degisiklik yapilmaz
+#   partial  — Sentinel yorumlariyla isaretlenmis bolumler sync edilir, proje-spesifik bolumler korunur
+#   adaptive — Dosya kopyalanir, .sync-config.yaml'daki degiskenlerle substitution yapilir
+#
+# Referans: docs/governance/49-upstream-sync-strategy.md
+
+version: "1.0"
+
+categories:
+  # ============================================================
+  # ZORUNLU MIRAS — override yasak, 2 sprint icinde yansitilmali
+  # ============================================================
+  mandatory:
+    description: "Zorunlu miras — override yasak, 2 sprint icinde yansitilmali"
+    deadline_sprints: 2
+    entries:
+      # --- ADR'ler (canonical kararlar, derived projede read-only) ---
+      - pattern: "docs/adr/ADR-*.md"
+        mode: exact
+        note: "Canonical stack kararlari. Derived projede docs/adr/ altinda read-only tutulur"
+
+      - pattern: "docs/adr/18-adr-template.md"
+        mode: exact
+        note: "ADR yazim sablonu"
+
+      # --- Domain guardrail'ler ---
+      - pattern: "docs/ai-guardrails/domain/D-*.md"
+        mode: exact
+        note: "Base domain guardrail'ler. Kaldirilmaz, gevsetilemez. Proje ek domain guardrail ekleyebilir (GP-XXX formati)"
+
+      # --- Aktivite guardrail'ler ---
+      - pattern: "docs/ai-guardrails/activity/A-*.md"
+        mode: exact
+        note: "Base aktivite guardrail'ler. Proje ek aktivite ekleyebilir"
+
+      # --- Governance (base kurallar) ---
+      - pattern: "docs/governance/15-quality-gates-and-ci-rules.md"
+        mode: exact
+
+      - pattern: "docs/governance/37-dependency-policy.md"
+        mode: exact
+        note: "Dependency base kurallari. Proje ek kategorik kisitlama ekleyebilir ama base gevsetilemez"
+
+      - pattern: "docs/governance/38-version-compatibility-matrix.md"
+        mode: exact
+        note: "Uyumluluk matrisi base satirlari sabit. Proje ek satir ekleyebilir"
+
+      - pattern: "docs/governance/40-ai-workflow-and-tooling.md"
+        mode: exact
+
+      - pattern: "docs/governance/41-ai-instruction-standards.md"
+        mode: exact
+
+      - pattern: "docs/governance/42-branching-and-merge-strategy.md"
+        mode: exact
+
+      - pattern: "docs/governance/44-exception-and-exemption-policy.md"
+        mode: exact
+
+      - pattern: "docs/governance/45-boilerplate-project-boundary-contract.md"
+        mode: exact
+
+      - pattern: "docs/governance/47-ai-guardrail-governance.md"
+        mode: exact
+
+      - pattern: "docs/governance/48-expo-sdk-upgrade-strategy.md"
+        mode: exact
+
+      - pattern: "docs/governance/49-upstream-sync-strategy.md"
+        mode: exact
+
+      # --- Quality baselines ---
+      - pattern: "docs/quality/12-accessibility-standard.md"
+        mode: exact
+        note: "WCAG AA minimum esik. Sikilastirabilir (AAA), gevsetilemez"
+
+      - pattern: "docs/quality/27-security-and-secrets-baseline.md"
+        mode: exact
+        note: "Security baseline. Sikilastirabilir, gevsetilemez"
+
+      # --- Design system (token spec + governance) ---
+      - pattern: "docs/design-system/22-design-tokens-spec.md"
+        mode: exact
+        note: "Token hiyerarsisi (raw -> semantic -> component) sabit. Degerler proje-ozel"
+
+      - pattern: "docs/design-system/23-component-governance-rules.md"
+        mode: exact
+
+      # --- Checklists ---
+      - pattern: "docs/checklists/32-definition-of-done.md"
+        mode: exact
+        note: "Base DoD maddeleri. Proje ek madde ekleyebilir, base kaldiramaz"
+
+      - pattern: "docs/checklists/31-audit-checklist.md"
+        mode: exact
+
+      # --- Implementation (repo structure) ---
+      - pattern: "docs/implementation/21-repo-structure-spec.md"
+        mode: exact
+
+      # --- Root dosyalar (partial sync) ---
+      - pattern: "CLAUDE.md"
+        mode: partial
+        sync_sections:
+          - "Canonical Kararlar"
+          - "Dependency Kurallari"
+          - "Kodlama Standartlari"
+          - "AI Guardrail Protokolu"
+          - "Belge Otorite Hiyerarsisi"
+          - "Boilerplate-Project Sinirlari"
+          - "Guvenlik"
+          - "Branching Stratejisi"
+          - "SDK Upgrade Kurallari"
+          - "Referans Dokumanlar"
+        preserve_sections:
+          - "Proje Kimligi"
+          - "Sik Kullanilan Komutlar"
+          - "Dosya Organizasyonu"
+          - "Stitch Entegrasyonu"
+          - "MoAI-ADK Entegrasyonu"
+          - "Dil Kurallari"
+
+      - pattern: "AGENTS.md"
+        mode: partial
+        sync_sections:
+          - "Review Guidelines"
+          - "Architecture Rules"
+          - "Canonical Stack"
+          - "Security Rules"
+          - "Exception Policy"
+          - "Boundary Contract"
+          - "Guardrail Compliance Review"
+        preserve_sections:
+          - "Testing Requirements"
+
+      # --- Claude AI altyapisi ---
+      - pattern: ".claude/hooks/pre-edit-guardrail.sh"
+        mode: exact
+        note: "Pre-edit guardrail hook'u. Devre disi birakilamaz"
+
+      - pattern: ".claude/hooks/post-edit-guardrail.sh"
+        mode: exact
+        note: "Post-edit guardrail hook'u. Devre disi birakilamaz"
+
+      - pattern: ".claude/skills/*/SKILL.md"
+        mode: exact
+        note: "Guardrail skill'leri. Proje ek skill ekleyebilir, base skill kaldiramaz"
+
+      - pattern: ".claude/settings.json"
+        mode: exact
+        note: "Hook tanimlari. Proje ek hook ekleyebilir, base hook devre disi birakilamaz"
+
+      # --- Tooling ---
+      - pattern: "tooling/governance/exception-template.yaml"
+        mode: exact
+
+      - pattern: "tooling/sync/upstream-sync-manifest.yaml"
+        mode: exact
+        note: "Manifest kendisi de sync edilir — derived proje her zaman guncel manifest'i kullanir"
+
+      - pattern: "tooling/sync/upstream-sync.sh"
+        mode: exact
+        note: "Sync scripti kendisi de sync edilir"
+
+      - pattern: "tooling/sync/partial-merge.sh"
+        mode: exact
+
+  # ============================================================
+  # YAPISAL MIRAS — sikilastirabilir/genisletilebilir, 4 sprint
+  # ============================================================
+  structural:
+    description: "Yapisal miras — sikilastirabilir, gevsetilemez, 4 sprint"
+    deadline_sprints: 4
+    entries:
+      # --- Architecture ---
+      - pattern: "docs/architecture/*.md"
+        mode: exact
+        note: "Mimari kurallar referans olarak sync edilir"
+
+      # --- Design system (diger dosyalar) ---
+      - pattern: "docs/design-system/03-ui-ux-quality-standard.md"
+        mode: exact
+
+      - pattern: "docs/design-system/04-design-system-architecture.md"
+        mode: exact
+
+      - pattern: "docs/design-system/05-theming-and-visual-language.md"
+        mode: exact
+
+      - pattern: "docs/design-system/24-motion-and-interaction-standard.md"
+        mode: exact
+
+      - pattern: "docs/design-system/25-error-empty-loading-states.md"
+        mode: exact
+
+      - pattern: "docs/design-system/26-platform-adaptation-rules.md"
+        mode: exact
+
+      - pattern: "docs/design-system/33-visual-implementation-contract.md"
+        mode: exact
+
+      - pattern: "docs/design-system/34-hig-enforcement-strategy.md"
+        mode: exact
+
+      - pattern: "docs/design-system/39-default-screens-and-components-spec.md"
+        mode: exact
+
+      # --- Foundation ---
+      - pattern: "docs/foundation/00-project-charter.md"
+        mode: exact
+
+      - pattern: "docs/foundation/01-working-principles.md"
+        mode: exact
+
+      - pattern: "docs/foundation/02-product-platform-philosophy.md"
+        mode: exact
+
+      # --- Quality (diger) ---
+      - pattern: "docs/quality/13-performance-standard.md"
+        mode: exact
+
+      - pattern: "docs/quality/14-testing-strategy.md"
+        mode: exact
+
+      # --- Governance (diger) ---
+      - pattern: "docs/governance/16-tooling-and-governance.md"
+        mode: exact
+
+      - pattern: "docs/governance/17-technology-decision-framework.md"
+        mode: exact
+
+      - pattern: "docs/governance/29-release-and-versioning-rules.md"
+        mode: exact
+
+      - pattern: "docs/governance/30-contribution-guide.md"
+        mode: exact
+
+      - pattern: "docs/governance/36-canonical-stack-decision.md"
+        mode: exact
+
+      - pattern: "docs/governance/46-stitch-pipeline-spec.md"
+        mode: exact
+
+      # --- Tooling (adaptive) ---
+      - pattern: "tooling/ci/ci.yml"
+        mode: adaptive
+        variables: ["REPO_NAME"]
+
+      - pattern: "tooling/ci/scheduled-audit.yml"
+        mode: adaptive
+        variables: ["REPO_NAME", "UPSTREAM_REPO"]
+
+      - pattern: "tooling/agents/*.md"
+        mode: adaptive
+        variables: ["APP_NAME", "PACKAGE_NAME"]
+
+  # ============================================================
+  # PROJE-SPESIFIK — sync edilmez, derived proje kendi olusturur
+  # ============================================================
+  project_specific:
+    description: "Sync edilmez — derived proje kendi olusturur veya uyarlar"
+    entries:
+      - pattern: "docs/onboarding/*"
+        note: "Derived proje kendi onboarding belgelerini yazar"
+
+      - pattern: "docs/implementation/20-initial-implementation-checklist.md"
+        note: "Bootstrap referansi, proje kendi checklist'ini olusturur"
+
+      - pattern: "docs/implementation/43-derived-project-creation-guide.md"
+        note: "Turetme rehberi, derived projede referans olarak tutulabilir"
+
+      - pattern: "docs/maps/35-document-map.md"
+        note: "Derived proje kendi dokueman haritasini olusturur"
+
+      - pattern: "docs/governance/ai-integration-documentation-plan.md"
+        note: "Boilerplate-spesifik planlama dokumani"
+
+      - pattern: ".gitignore"
+        note: "Base pattern korunur, proje ek pattern ekler. Otomatik sync yapilmaz"
+
+      - pattern: ".claudeignore"
+        note: "Base pattern korunur, proje ek pattern ekler. Otomatik sync yapilmaz"
+
+      - pattern: "BOUNDARY.md"
+        note: "Derived proje kendi olusturur, sync script tarafindan guncellenir"
+
+      - pattern: "CHANGELOG.md"
+        note: "Boilerplate changelog'u. Derived projede referans olarak okunur ama kopyalanmaz"
+
+      - pattern: "tooling/sync/derived-projects.txt"
+        note: "Boilerplate-spesifik derived proje listesi"
+
+      - pattern: "tooling/pnpm/*"
+        note: "Ornek dosyalar, proje kendi config'ini olusturur"
+
+      - pattern: "project/**"
+        note: "Derived proje-ozel alan, boilerplate'te bulunmaz"
+
+      - pattern: ".sync-config.yaml"
+        note: "Derived proje-ozel degiskenler, her projede farkli"

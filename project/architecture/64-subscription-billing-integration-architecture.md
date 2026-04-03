@@ -53,7 +53,7 @@ Bu urunde subscription urunun kendisi degildir; ama yanlış mimari, urunu rastg
 
 Bu belge icin ana karar sudur:
 
-> Subscription provider, ödeme ve faturalama olaylarının dış kaynağıdır; ancak urun için gerçek erişim kaynağı `subscription state + entitlement service` katmanıdır; tüm billing olayları webhook/event akışıyla bu katmana yansıtılır ve UI bu entitlements üzerinden davranır.
+> Canonical subscription authority, boilerplate ADR-016 ile uyumlu `RevenueCat-class` entitlement ve subscription katmanidir; web checkout surface `Stripe-class` olabilir, ancak urun için gerçek erişim kaynağı yine `subscription state + entitlement service` katmanıdır; tüm billing olayları webhook/event akışıyla bu katmana yansıtılır ve UI bu entitlements üzerinden davranır.
 
 Bu karar su sonuclari dogurur:
 
@@ -61,6 +61,7 @@ Bu karar su sonuclari dogurur:
 2. Webhook tek başına doğrudan UI state değildir; önce internal state güncellenir.
 3. Owner dışındaki actor billing write aksiyonu alamaz.
 4. Grace period ve downgrade davranışı domain mantığıyla ele alınır.
+5. `Stripe-class` checkout surface, `RevenueCat-class` subscription truth'unun yerine gecmez.
 
 ---
 
@@ -81,6 +82,7 @@ Gorevi:
 - checkout/session creation
 - provider customer/subscription mapping
 - invoice/payment event uyumu
+- `RevenueCat-class` subscription authority ile `Stripe-class` web checkout bridge'ini ayri ama bagli adapter'lar olarak tasimak
 
 ### 4.2. Subscription state persistence
 
@@ -281,7 +283,8 @@ Mobile tarafı platform/store policy ile çelişmeyecek şekilde davranmalıdır
 Kural:
 
 - aggressive external purchase dili mobile creator app içinde kullanılmaz
-- store policy gerektiriyorsa native purchase adaptörü ayrıca ele alınır
+- mobile paid entry UI MVP kritik yoluna alinmasa bile canonical store purchase yolu mimariden silinmez
+- store policy gerektiriyorsa native purchase adaptörü `RevenueCat-class` authority ile uyumlu sekilde ele alınır
 
 ### 10.3. Neden?
 
@@ -402,4 +405,3 @@ Bu belge basarisiz sayilir, eger:
 - provider ile internal state sık sık ayrışıyorsa
 - billing write yetkisi owner dışına sızıyorsa
 - billing failure yüzünden public kalite aniden kırılıyorsa
-
