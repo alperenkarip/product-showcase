@@ -3,9 +3,9 @@ id: API-CONTRACTS-001
 title: API Contracts
 doc_type: api_spec
 status: ratified
-version: 2.0.0
+version: 2.1.0
 owner: engineering
-last_updated: 2026-04-02
+last_updated: 2026-04-03
 language: tr
 source_of_truth: true
 depends_on:
@@ -18,6 +18,7 @@ blocks:
   - DATABASE-SCHEMA-SPEC
   - CACHE-REVALIDATION-STALENESS-RULES
   - WEBHOOK-EVENT-CONSUMER-SPEC
+  - OPENAPI-CLIENT-GENERATION-SPEC-001
   - FEATURE-SEQUENCING-DEPENDENCY-ORDER
 ---
 
@@ -28,7 +29,7 @@ blocks:
 Bu belge, `product-showcase` urununun HTTP ve uygulama-servis kontratlarini tanimlayan resmi API spesifikasyonudur. Hangi endpoint ailelerinin bulunacagini, hangi route'larin public veya authenticated olacagini, request ve response zarflarinin nasil standardize edilecegini, write workflow'larinda idempotency ve stale-write guard'larinin nasil uygulanacagini ve web ile mobile istemcilerin ayni semantic contract dunyasini nasil paylasacagini belirler.
 
 Bu belge exact OpenAPI export'u degildir.  
-Ama exact route implementation, shared schema paketi ve client SDK uretecek kadar baglayicidir.
+Ama exact route implementation, shared schema paketi ve client SDK uretecek kadar baglayicidir. Fiziksel OpenAPI export, generated client ve fixture authority'si `[76-openapi-and-client-generation-spec.md](/Users/alperenkarip/Projects/product-showcase/project/data/76-openapi-and-client-generation-spec.md)` belgesinde sabitlenir.
 
 Bu belge su sorulara cevap verir:
 

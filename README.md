@@ -1,13 +1,13 @@
 # Product Showcase
 
-`product-showcase`, creator'larin kullandigi veya onerdigi urunleri tek link altinda baglamli storefront'lar, shelf'ler ve content-linked page'ler uzerinden yayinlamasini hedefleyen urun icin proje-ozel dokumantasyon calisma alanidir.
+`product-showcase`, creator'larin kullandigi veya onerdigi urunleri tek link altinda baglamli storefront'lar, shelf'ler ve content-linked page'ler uzerinden yayinlamasini hedefleyen urun icin proje-ozel dokumantasyon ve implementasyon authority reposudur.
 
 Bu repo su anda kod degil, derived proje oncesi belge otoritesi icerir. Boilerplate otoritesi `../boilerplate` altindadir; bu dizin ise yalnizca proje-ozel karar katmanini tasir.
 
 ## Ne Var?
 
 - root boundary ve repo ozeti
-- `project/` altinda 100 proje-ozel dokuman
+- `project/` altinda implementation-ready proje-ozel dokuman seti
 - arastirma notlari ve giris kaynaklari
 - `.env.example` + environment matrix referansi
 
@@ -37,11 +37,11 @@ Bu repo, boilerplate `docs/` alanini tekrar etmez. Onun yerine su proje-ozel ail
 - `project/import/40-48` -> URL import ve extraction
 - `project/design/50-58` -> ekran ve UX spec
 - `project/architecture/60-69` -> sistem ve runtime mimarisi
-- `project/data/70-75` -> API, schema, jobs ve cache
+- `project/data/70-77` -> API, schema, jobs, cache ve executable contract bridge
 - `project/quality/80-88` -> kalite ve acceptance
 - `project/compliance/90-94` -> privacy, disclosure, abuse
-- `project/operations/100-104` -> env, runbook, support
-- `project/implementation/110-115` -> roadmap ve rollout
+- `project/operations/100-106` -> env, runbook, support, analytics ve messaging policy
+- `project/implementation/110-118` -> roadmap, bootstrap ve delivery execution pack
 - `project/adr/PROJECT-ADR-001-011` -> proje karar kayitlari
 - `project/ai-guardrails/GP-001-005` -> proje-ozel AI guardrail seti
 
@@ -56,4 +56,4 @@ Bu belge seti su kaynaklar kullanilarak yazildi:
 
 ## Durum
 
-Mevcut durum `documentation-first / pre-bootstrap` safhasidir. Proje belge omurgasi kurulmustur; fiziksel derived monorepo bootstrap'i, upstream sync yapisi ve kod tabani sonraki adımdır.
+Mevcut durum `documentation-first / implementation-ready / pre-code-bootstrap` safhasidir. Proje belge omurgasi, repo/bootstrap kararlari, stack secimi, contract generation plani ve ticket seviyesi MVP execution paketi kurulmustur; fiziksel kod bootstrap'i bu repo icinde bir sonraki uygulama adimidir.

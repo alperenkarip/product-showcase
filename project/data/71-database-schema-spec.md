@@ -3,9 +3,9 @@ id: DATABASE-SCHEMA-SPEC-001
 title: Database Schema Spec
 doc_type: data_architecture
 status: ratified
-version: 2.0.0
+version: 2.1.0
 owner: engineering
-last_updated: 2026-04-02
+last_updated: 2026-04-03
 language: tr
 source_of_truth: true
 depends_on:
@@ -18,6 +18,7 @@ blocks:
   - BACKGROUND-JOBS-SCHEDULING-SPEC
   - DATA-BACKUP-RETENTION-RESTORE
   - PRIVACY-DATA-MAP
+  - DATABASE-MIGRATION-SEED-BOOTSTRAP-PLAN-001
   - FEATURE-SEQUENCING-DEPENDENCY-ORDER
 ---
 
@@ -27,7 +28,7 @@ blocks:
 
 Bu belge, `product-showcase` urununun kalici veri omurgasini, ana tablo ailelerini, iliski modelini, hangi alanlarin source of truth oldugunu, nerede relational modelin zorunlu oldugunu, nerede controlled JSONB esnekligi kullanilabilecegini ve retention / audit / idempotency gereksinimlerinin fiziksel schema'ya nasil yansiyacagini tanimlayan resmi database schema belgesidir.
 
-Bu belge yalnizca tablo listesi degildir.  
+Bu belge yalnizca tablo listesi degildir. Fiziksel migration dalgalari, seed siniflari ve bootstrap komut authority'si `[77-database-migration-and-seed-bootstrap-plan.md](/Users/alperenkarip/Projects/product-showcase/project/data/77-database-migration-and-seed-bootstrap-plan.md)` belgesinde tanimlanir.  
 Su sorulari cevaplar:
 
 - Bu urunun ana verisi hangi depoda tutulur?

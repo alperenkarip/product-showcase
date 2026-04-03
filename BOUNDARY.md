@@ -6,7 +6,7 @@
 - **Dosya adi:** `BOUNDARY.md`
 - **Dokuman turu:** Boundary / derived project manifest
 - **Durum:** Accepted
-- **Tarih:** 2026-04-02
+- **Tarih:** 2026-04-03
 - **Kapsam:** `product-showcase` calisma alaninin boilerplate ile sinir iliskisini, zorunlu miras katmanlarini, proje-ozel dokuman alanini ve mevcut turetme durumunu tanimlar.
 
 ---
@@ -22,16 +22,16 @@ Bu belge, boilerplate otoritesi ile proje otoritesini acik bicimde ayirir. Bu re
 | Alan | Durum |
 | --- | --- |
 | Proje adi | `product-showcase` |
-| Calisma modu | Documentation-first, pre-bootstrap |
+| Calisma modu | Documentation-first, implementation-ready, pre-code-bootstrap |
 | Boilerplate referansi | `../boilerplate` |
 | Referans denetim tarihi | 2026-04-02 |
-| Fiziksel monorepo bootstrap | Henuz yapilmadi |
-| Upstream remote | Bu repo'da tanimli degil |
+| Fiziksel monorepo bootstrap | Henuz uygulanmadi; source-of-truth bootstrap belgeleri yazildi |
+| Upstream remote | `origin -> alperenkarip/product-showcase` |
 | `.sync-config.yaml` | Yok |
 | `docs/adr/` boilerplate kopyasi | Yok |
 | Aktif override | Yok |
 
-Bu repo, derived monorepo'nun kendisi degil; derived repo oncesi proje belge katmanidir.
+Bu repo artik proje icin canonical git reposudur; kod omurgasi henuz acilmamis olsa da derived monorepo bootstrap'i bu repo icinde uygulanacaktir.
 
 ---
 
@@ -104,30 +104,32 @@ Bu repo icinde olusturulan proje-ozel belge aileleri:
 - compliance
 - operations
 - implementation
+- implementation-ready bootstrap pack
 - project ADR
 - project AI guardrails
 
-Toplam `project/` belge sayisi: 100 dosya.
+Toplam `project/` belge sayisi: 107 dosya.
 
 ---
 
 # 7. Bilinen Bosluklar
 
-Belge seti tamamlanmis olsa da su alanlar henuz fiziksel repo seviyesinde yoktur:
+Belge seti implementation-ready olsa da su alanlar henuz fiziksel repo seviyesinde yoktur:
 
 - `apps/`, `packages/`, `tooling/`, `scripts/`
 - derived repo `docs/` ve boilerplate ADR kopyasi
-- upstream remote ve sync config
+- upstream sync config ve docs mirror automation
 - toolchain lock dosyalari
 
-Bu bosluklar implementasyona gecis oncesi kapatilmalidir.
+Bu bosluklar artik belgesiz degildir; `project/implementation/116-118`, `project/data/76-77` ve `project/operations/105-106` aileleri tarafindan kapatilacak sekilde tanimlanmistir. Fiziksel implementasyon adimi bunlari uygulamaktir.
 
 ---
 
 # 8. Sonraki Zorunlu Adimlar
 
-1. Boilerplate tabanli fiziksel repo bootstrap'ini baslatmak
-2. `BOUNDARY.md`'yi upstream hash ve sync bilgisiyle zenginlestirmek
-3. `docs/adr/` referans setini derived repo'ya yerlestirmek
-4. `project/implementation/110-115` ailesini bootstrap checklist ile eslestirmek
+1. `project/implementation/116-derived-repo-bootstrap-and-monorepo-spec.md` uzerinden fiziksel repo bootstrap'ini baslatmak
+2. `project/implementation/117-tech-stack-and-runtime-decisions.md` uzerinden dependency ve runtime lock'larini package manifest'lerine uygulamak
+3. `project/data/76-openapi-and-client-generation-spec.md` ve `project/data/77-database-migration-and-seed-bootstrap-plan.md` uzerinden generated artefact ve migration zincirini kurmak
+4. `docs/adr/` referans setini derived repo'ya yerlestirmek
 5. `.env.example` ve `project/operations/100-environment-and-secrets-matrix.md` uzerinden gercek environment kurulumuna gecmek
+6. `project/implementation/118-mvp-execution-ticket-pack.md` uzerinden sprint ve ticket acilisini baslatmak

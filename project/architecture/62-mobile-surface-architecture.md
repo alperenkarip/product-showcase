@@ -147,7 +147,7 @@ Ornek:
 
 - import callback
 - quick add intent
-- push notification ile ilgili pending review
+- notification center CTA veya gelecekte acilacak push callback
 
 ### 7.2. Public consumption deep link
 
